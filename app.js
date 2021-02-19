@@ -21,42 +21,40 @@ const Article= mongoose.model("Article",articleSchema);
 
 
 
+app.route("/articles")
 
-app.get("/articles",function(req,res){
-  Article.find(function(err,foundArticles){
-      if (!err){
-        res.send(foundArticles);
-      } else {
-        res.send(err);
-      }
-  })
-});
-
-app.post("/articles",function(req,res){
-  const newArticle = new Article({
-    title: req.body.title,
-    content: req.body.content
-  });
-  newArticle.save(function(err){
-    if(!err){
-      res.send("Successfully added a new article.")
+  .get(function(req,res){
+    if (!err){
+      res.send(foundArticles);
     } else {
       res.send(err);
     }
-  });
-})
+  })
 
-app.delete("/articles",function(req,res){
-  Article.deleteMany(
-    function(err){
-      if (!err){
-        res.send("Successfully deleted all articles.");
+  .post(function(req,res){
+    const newArticle = new Article({
+      title: req.body.title,
+      content: req.body.content
+    });
+    newArticle.save(function(err){
+      if(!err){
+        res.send("Successfully added a new article.")
       } else {
         res.send(err);
       }
-    }
-  )
-})
+    });
+  })
+
+  .delete(function(req,res){
+    Article.deleteMany(
+      function(err){
+        if (!err){
+          res.send("Successfully deleted all articles.");
+        } else {
+          res.send(err);
+        }
+      });
+  });
 
 app.post("/articles/:articleName",function(req,res){
 
